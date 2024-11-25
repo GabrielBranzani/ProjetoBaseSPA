@@ -1,0 +1,21 @@
+<ul class="nav flex-column">
+  <li class="nav-item" *ngFor="let menu of menus">
+    <a class="nav-link" [routerLink]="menu.formularioRota">
+      <i [class]="menu.moduloIcone"></i> {{ menu.nomModulo }}
+    </a>
+    <ul class="nav flex-column" *ngIf="menu.codMenu">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="menu.formularioRota">
+          <i [class]="menu.menuIcone"></i> {{ menu.nomMenu }}
+        </a>
+        <ul class="nav flex-column" *ngIf="menu.codFormulario">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="menu.formularioRota">
+              <i [class]="menu.formularioIcone"></i> {{ menu.nomFormulario }}
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
