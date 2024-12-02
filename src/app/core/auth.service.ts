@@ -34,7 +34,8 @@ export class AuthService {
         return throwError(() => error); 
       })
     );
-  }
+  } 
+  
 
   renovarToken(): Observable<LoginResponse> { 
     return this.http.post<LoginResponse>(`${this.apiUrl}/renovar-token`, {}, { withCredentials: true }).pipe( 
