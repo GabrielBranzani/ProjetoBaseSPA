@@ -1,0 +1,42 @@
+<div class="usuario-container">
+  <h2>Usuários</h2>
+
+  <app-mensagem [mensagem]="mensagem" [tipo]="tipoMensagem"></app-mensagem>
+
+  <form (ngSubmit)="salvarUsuario()" #usuarioForm="ngForm">
+    <div class="form-group">
+      <label for="nomUsuario">Nome:</label>
+      <input type="text" id="nomUsuario" name="nomUsuario" [(ngModel)]="usuario.nomUsuario" required>
+    </div>
+    <div class="form-group">
+      <label for="numCPF">CPF:</label>
+      <input type="text" id="numCPF" name="numCPF" [(ngModel)]="usuario.numCPF" required>
+    </div>
+    <div class="form-group">
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha" [(ngModel)]="usuario.SenhaHash" required>
+    </div>
+    <button type="submit" [disabled]="!usuarioForm.valid">Salvar</button>
+  </form>
+
+  <h3>Lista de Usuários</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuarios">
+        <td>{{ usuario.nomUsuario }}</td>
+        <td>{{ usuario.numCPF }}</td>
+        <td>
+          <button (click)="editarUsuario(usuario)">Editar</button>
+          <button (click)="desativarUsuario(usuario.codUsuario)">Desativar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

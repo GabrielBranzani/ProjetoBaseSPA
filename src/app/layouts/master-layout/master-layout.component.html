@@ -1,0 +1,16 @@
+<div class="master-layout-container">
+  <header>
+    <h1>MasterPage</h1>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a routerLink="/bem-vindo">Bem-vindo</a></li>
+      <li><a routerLink="/usuario">Usuários</a></li>
+      <li><button (click)="logout()">Sair</button></li> </ul>
+  </nav>
+
+  <main id="AreaMain">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,14 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <div class="form-group">
+      <label for="numCPF">CPF:</label>
+      <input type="text" id="numCPF" name="numCPF" [(ngModel)]="usuario.numCPF" required>
+    </div>
+    <div class="form-group">
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" name="senha" [(ngModel)]="usuario.Senha" required>
+    </div>
+    <button type="submit" [disabled]="!loginForm.valid">Entrar</button>
+  </form>
+</div>
