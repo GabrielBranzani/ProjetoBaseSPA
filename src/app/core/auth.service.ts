@@ -11,43 +11,53 @@ interface LoginResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private readonly apiUrl = 'http://localhost:5275/api/auth';
   private tokenSubject = new BehaviorSubject<string | null>(null);
   public token$ = this.tokenSubject.asObservable();
   private jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router) {
     this.loadTokenFromStorage();
   }
 
-  login(usuario: UsuarioLoginDto): Observable<LoginResponse> { 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, usuario, { withCredentials: true }).pipe( 
-      tap(response => {
-        this.saveToken(response.token);
-      }),
-      catchError(error => {
-        console.error('Erro ao fazer login:', error);
-        return throwError(() => error); 
+  login(usuario: UsuarioLoginDto): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${this.apiUrl}/login`, usuario, {
+        withCredentials: true,
       })
-    );
-  } 
-  
+      .pipe(
+        tap((response) => {
+          this.saveToken(response.token);
+        }),
+        catchError((error) => {
+          console.error('Erro ao fazer login:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 
-  renovarToken(): Observable<LoginResponse> { 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/renovar-token`, {}, { withCredentials: true }).pipe( 
-      tap(response => {
-        this.saveToken(response.token);
-      }),
-      catchError(error => {
-        console.error('Erro ao renovar token:', error);
-        this.logout();
-        return throwError(() => error); 
-      })
-    );
+  renovarToken(): Observable<LoginResponse> {
+    console.log('renovarToken executado');
+    return this.http
+      .post<LoginResponse>(
+        `${this.apiUrl}/renovar-token`,
+        {},
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((response) => {
+          this.saveToken(response.token);
+          console.log('renovarToken salvo novo');
+        }),
+        catchError((error) => {
+          console.error('Erro ao renovar token:', error);
+          this.logout();
+          return throwError(() => error);
+        })
+      );
   }
 
   private saveToken(token: string): void {
@@ -81,7 +91,7 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       const decodedToken = this.jwtHelper.decodeToken(token);
-      return decodedToken.nameid ? parseInt(decodedToken.nameid, 10) : null; 
+      return decodedToken.nameid ? parseInt(decodedToken.nameid, 10) : null;
     }
     return null;
   }
@@ -90,7 +100,7 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       const decodedToken = this.jwtHelper.decodeToken(token);
-      return decodedToken.unique_name; 
+      return decodedToken.unique_name;
     }
     return null;
   }

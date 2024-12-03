@@ -4,13 +4,12 @@ import { Observable } from 'rxjs';
 import { UsuarioModel } from '../model/Gerenciador/usuarios';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioService {
-
   private readonly apiUrl = 'http://localhost:5275/api/usuario'; // Substitua pela URL da sua API
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   obterUsuarios(): Observable<UsuarioModel[]> {
     return this.http.get<UsuarioModel[]>(this.apiUrl);
@@ -21,7 +20,10 @@ export class UsuarioService {
   }
 
   atualizarUsuario(usuario: UsuarioModel): Observable<UsuarioModel> {
-    return this.http.put<UsuarioModel>(`${this.apiUrl}/${usuario.codUsuario}`, usuario);
+    return this.http.put<UsuarioModel>(
+      `${this.apiUrl}/${usuario.codUsuario}`,
+      usuario
+    );
   }
 
   desativarUsuario(codUsuario: number): Observable<any> {

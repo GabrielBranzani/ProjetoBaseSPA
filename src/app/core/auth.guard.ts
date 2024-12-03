@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router,
+} from '@angular/router';
 import { Observable, of, timer } from 'rxjs';
 import { AuthService } from './auth.service';
 import { switchMap, map, take } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt'; // Adicione esta linha
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> {
-
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
     // 1. Verificar se o usuário está autenticado
     if (this.authService.isAuthenticated()) {
       // 2. Verificar se o token está perto de expirar
       const tokenExpiration = this.getTokenExpirationDate();
-      if (tokenExpiration && tokenExpiration < this.addMinutesToDate(new Date(), 1)) { // Renova 1 minuto antes de expirar
+      if (
+        tokenExpiration &&
+        tokenExpiration < this.addMinutesToDate(new Date(), 1)
+      ) {
+        // Renova 1 minuto antes de expirar
         // 3. Renovar o token
         return this.authService.renovarToken().pipe(
           switchMap(() => {
